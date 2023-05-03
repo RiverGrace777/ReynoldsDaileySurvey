@@ -771,8 +771,8 @@ abline(h = 0, lty = 1)
 ## PLOT WILL
 willPlot <- plotmeans(Will ~ Treatment, data = srDat, Race,
                         connect = FALSE, mean.labels = FALSE, n.label = F,
-                        ylab = "Is What Happened Fair", xlab = "Treatment Group", 
-                        main = "Should There Be a Law to Protect?", error.bars = "conf.int",
+                        ylab = "Agreement", xlab = "Treatment Group", 
+                        main = "Weight is Personal Responsibility", error.bars = "conf.int",
                         ylim=c(0, 6), xaxt="n", barcol = "black", frame = F)
 angleAxis(side = 1, labels = c("Unidentified", "Black Woman", 
                                "White Woman", "Black Man", "White Man"), at = 1:5, 
@@ -901,12 +901,35 @@ lm(EmpLaw ~ EmpMes, data = srDat)
 lm(EmpLaw ~ Identity, data = srDat)
 lm(EmpLaw ~ EmpAll, data = FakeWD)
 
+# rates of weight stigma
+srDat$ExpBinary <- c()
+for (x in 1:nrow(srDat)) {
+  if (is.na(srDat$Experience[x]) == TRUE) {
+    srDat$ExpBinary[x] <- NA
+  }
+  else if (srDat$Experience[x] >= 4) {
+    srDat$ExpBinary[x] <- 1
+  }
+  else {
+    srDat$ExpBinary[x] <- 0
+  }
+}
+mean(srDat$ExpBinary, na.rm = T)
 
-
-
-
-
-
+# mean belief that weight is a personal responsibility
+srDat$WillBinary <- c()
+for (x in 1:nrow(srDat)) {
+  if (is.na(srDat$Will[x]) == TRUE) {
+    srDat$WillBinary[x] <- NA
+  }
+  else if (srDat$Will[x] >= 4) {
+    srDat$WillBinary[x] <- 1
+  }
+  else {
+    srDat$WillBinary[x] <- 0
+  }
+}
+mean(srDat$WillBinary, na.rm = T)
 
 
 
