@@ -769,14 +769,27 @@ abline(h = 3.5, lty=2)
 abline(h = 0, lty = 1)
 
 ## PLOT WILL
-willPlot <- plotmeans(Will ~ Treatment, data = srDat, Race,
+willPlot <- plotmeans(Will ~ Treatment, data = srDat,
                         connect = FALSE, mean.labels = FALSE, n.label = F,
                         ylab = "Agreement", xlab = "Treatment Group", 
                         main = "Weight is Personal Responsibility", error.bars = "conf.int",
-                        ylim=c(0, 6), xaxt="n", barcol = "black", frame = F)
+                        ylim=c(0, 6), xaxt="n", frame = F)
 angleAxis(side = 1, labels = c("Unidentified", "Black Woman", 
                                "White Woman", "Black Man", "White Man"), at = 1:5, 
           srt = 0, adj =  0.5, xpd = TRUE)
+abline(h = 3.5, lty=2)
+abline(h = 0, lty = 1)
+
+# White women's views on will
+whiteWill <- plotmeans(Will ~ Treatment, data = RaceW[which(RaceW$Gender == 1),],
+                       connect = FALSE, mean.labels = FALSE, n.label = F,
+                       ylab = "Agreement", xlab = "Treatment Group", 
+                       main = "Weight is Personal Responsibility", error.bars = "conf.int",
+                       ylim=c(0, 6), xaxt="n", frame = F)
+
+angleAxis(side = 1, labels = c("Unidentified", "Black Woman", 
+                    "White Woman", "Black Man", "White Man"), at = 1:5, 
+                    srt = 0, adj =  0.5, xpd = TRUE)
 abline(h = 3.5, lty=2)
 abline(h = 0, lty = 1)
 
@@ -902,6 +915,22 @@ lm(EmpLaw ~ Identity, data = srDat)
 lm(EmpLaw ~ EmpAll, data = FakeWD)
 
 # rates of weight stigma
+# for everyone
+srDat$ExpBinary <- c()
+for (x in 1:nrow(srDat)) {
+  if (is.na(srDat$Experience[x]) == TRUE) {
+    srDat$ExpBinary[x] <- NA
+  }
+  else if (srDat$Experience[x] >= 4) {
+    srDat$ExpBinary[x] <- 1
+  }
+  else {
+    srDat$ExpBinary[x] <- 0
+  }
+}
+mean(srDat$ExpBinary, na.rm = T)
+
+# for Black women
 srDat$ExpBinary <- c()
 for (x in 1:nrow(srDat)) {
   if (is.na(srDat$Experience[x]) == TRUE) {
@@ -930,6 +959,26 @@ for (x in 1:nrow(srDat)) {
   }
 }
 mean(srDat$WillBinary, na.rm = T)
+
+
+# check mean policy support
+srDat$PolBinary <- c()
+for (x in 1:nrow(srDat)) {
+  if (is.na(srDat$Policy[x]) == TRUE) {
+    srDat$PolBinary[x] <- NA
+  }
+  else if (srDat$Policy[x] >= 4) {
+    srDat$PolBinary[x] <- 1
+  }
+  else {
+    srDat$PolBinary[x] <- 0
+  }
+}
+biPolM <- mean(srDat$PolBinary, na.rm = T)
+biPolSd <- sd(srDat$PolBinary, na.rm = TRUE)
+
+conf_int(biPolM, biPolSd, nrow(srDat))
+
 
 
 
